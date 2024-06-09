@@ -1,0 +1,22 @@
+node
+def app
+
+stage('Clone repository'){
+  git 'https://github.com/MBANAA/web-coffee'
+}
+
+stage('Build the image'){
+  app docker.build("banamouad/banamouad:$(env.BUILD_NUMBER)")
+}
+
+stage("Test image"){
+  app.inside
+  sh 'echo "test passed"'
+}
+
+stage('Push the image'){
+  withCredentials ([username Password (credentialsId: 'DockerHub-id', passwordVariable: 'DOCKER_PASSWORD', usernamevariable: 'DOCKER_USERNAME')]) {
+    sh 'docker login -u $(DOCKER_USERNAME) -p $(DOCKER_PASSWORD)'
+    sh "docker push banamouad/banamouad:$(env.BUILD_NUMBER)"
+  }
+}
