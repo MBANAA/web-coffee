@@ -6,7 +6,7 @@ stage('Clone repository'){
 }
 
 stage('Build the image'){
-  app docker.build("banamouad/my-app:$(env.BUILD_NUMBER)")
+  app docker.build("banamouad/banamouad:$(env.BUILD_NUMBER)")
 }
 
 stage("Test image"){
